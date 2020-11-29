@@ -158,5 +158,25 @@ func (rr *RtcpReceiver) Report(ts time.Time) []byte {
 		panic(err)
 	}
 
-	return byts
+	// some cameras require a source description aftera receiver report
+	// otherwise they drops the connection after a timeout
+	sd := rtcp.SourceDescription{
+		Chunks: []rtcp.SourceDescriptionChunk{
+			{
+				Source: rr.receiverSSRC,
+				Items: []rtcp.SourceDescriptionItem{
+					{
+						Type: rtcp.SDESCNAME,
+						Text: "hostname",
+					},
+				},
+			},
+		},
+	}
+	sdb, err := sd.Marshal()
+	if err != nil {
+		panic(err)
+	}
+
+	return append(byts, sdb...)
 }

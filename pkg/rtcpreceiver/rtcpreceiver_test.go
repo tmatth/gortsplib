@@ -56,7 +56,7 @@ func TestRtcpReceiverBase(t *testing.T) {
 	ts = time.Date(2008, 05, 20, 22, 15, 21, 0, time.UTC)
 	rr.OnFrame(ts, base.StreamTypeRtp, byts)
 
-	expectedPkt := rtcp.ReceiverReport{
+	exp1, _ := rtcp.ReceiverReport{
 		SSRC: 0x65f83afb,
 		Reports: []rtcp.ReceptionReport{
 			{
@@ -66,10 +66,22 @@ func TestRtcpReceiverBase(t *testing.T) {
 				Delay:              2 * 65536,
 			},
 		},
-	}
-	expected, _ := expectedPkt.Marshal()
+	}.Marshal()
+	exp2, _ := rtcp.SourceDescription{
+		Chunks: []rtcp.SourceDescriptionChunk{
+			{
+				Source: 0x65f83afb,
+				Items: []rtcp.SourceDescriptionItem{
+					{
+						Type: rtcp.SDESCNAME,
+						Text: "hostname",
+					},
+				},
+			},
+		},
+	}.Marshal()
 	ts = time.Date(2008, 05, 20, 22, 15, 22, 0, time.UTC)
-	require.Equal(t, expected, rr.Report(ts))
+	require.Equal(t, append(exp1, exp2...), rr.Report(ts))
 }
 
 func TestRtcpReceiverOverflow(t *testing.T) {
@@ -117,7 +129,7 @@ func TestRtcpReceiverOverflow(t *testing.T) {
 	ts = time.Date(2008, 05, 20, 22, 15, 20, 0, time.UTC)
 	rr.OnFrame(ts, base.StreamTypeRtp, byts)
 
-	expectedPkt := rtcp.ReceiverReport{
+	exp1, _ := rtcp.ReceiverReport{
 		SSRC: 0x65f83afb,
 		Reports: []rtcp.ReceptionReport{
 			{
@@ -127,10 +139,22 @@ func TestRtcpReceiverOverflow(t *testing.T) {
 				Delay:              1 * 65536,
 			},
 		},
-	}
-	expected, _ := expectedPkt.Marshal()
+	}.Marshal()
+	exp2, _ := rtcp.SourceDescription{
+		Chunks: []rtcp.SourceDescriptionChunk{
+			{
+				Source: 0x65f83afb,
+				Items: []rtcp.SourceDescriptionItem{
+					{
+						Type: rtcp.SDESCNAME,
+						Text: "hostname",
+					},
+				},
+			},
+		},
+	}.Marshal()
 	ts = time.Date(2008, 05, 20, 22, 15, 21, 0, time.UTC)
-	require.Equal(t, expected, rr.Report(ts))
+	require.Equal(t, append(exp1, exp2...), rr.Report(ts))
 }
 
 func TestRtcpReceiverPacketLost(t *testing.T) {
@@ -178,7 +202,7 @@ func TestRtcpReceiverPacketLost(t *testing.T) {
 	ts = time.Date(2008, 05, 20, 22, 15, 20, 0, time.UTC)
 	rr.OnFrame(ts, base.StreamTypeRtp, byts)
 
-	expectedPkt := rtcp.ReceiverReport{
+	exp1, _ := rtcp.ReceiverReport{
 		SSRC: 0x65f83afb,
 		Reports: []rtcp.ReceptionReport{
 			{
@@ -193,10 +217,22 @@ func TestRtcpReceiverPacketLost(t *testing.T) {
 				Delay:     1 * 65536,
 			},
 		},
-	}
-	expected, _ := expectedPkt.Marshal()
+	}.Marshal()
+	exp2, _ := rtcp.SourceDescription{
+		Chunks: []rtcp.SourceDescriptionChunk{
+			{
+				Source: 0x65f83afb,
+				Items: []rtcp.SourceDescriptionItem{
+					{
+						Type: rtcp.SDESCNAME,
+						Text: "hostname",
+					},
+				},
+			},
+		},
+	}.Marshal()
 	ts = time.Date(2008, 05, 20, 22, 15, 21, 0, time.UTC)
-	require.Equal(t, expected, rr.Report(ts))
+	require.Equal(t, append(exp1, exp2...), rr.Report(ts))
 }
 
 func TestRtcpReceiverOverflowPacketLost(t *testing.T) {
@@ -244,7 +280,7 @@ func TestRtcpReceiverOverflowPacketLost(t *testing.T) {
 	ts = time.Date(2008, 05, 20, 22, 15, 20, 0, time.UTC)
 	rr.OnFrame(ts, base.StreamTypeRtp, byts)
 
-	expectedPkt := rtcp.ReceiverReport{
+	exp1, _ := rtcp.ReceiverReport{
 		SSRC: 0x65f83afb,
 		Reports: []rtcp.ReceptionReport{
 			{
@@ -259,10 +295,22 @@ func TestRtcpReceiverOverflowPacketLost(t *testing.T) {
 				Delay:     1 * 65536,
 			},
 		},
-	}
-	expected, _ := expectedPkt.Marshal()
+	}.Marshal()
+	exp2, _ := rtcp.SourceDescription{
+		Chunks: []rtcp.SourceDescriptionChunk{
+			{
+				Source: 0x65f83afb,
+				Items: []rtcp.SourceDescriptionItem{
+					{
+						Type: rtcp.SDESCNAME,
+						Text: "hostname",
+					},
+				},
+			},
+		},
+	}.Marshal()
 	ts = time.Date(2008, 05, 20, 22, 15, 21, 0, time.UTC)
-	require.Equal(t, expected, rr.Report(ts))
+	require.Equal(t, append(exp1, exp2...), rr.Report(ts))
 }
 
 func TestRtcpReceiverReorderedPackets(t *testing.T) {
@@ -310,7 +358,7 @@ func TestRtcpReceiverReorderedPackets(t *testing.T) {
 	ts = time.Date(2008, 05, 20, 22, 15, 20, 0, time.UTC)
 	rr.OnFrame(ts, base.StreamTypeRtp, byts)
 
-	expectedPkt := rtcp.ReceiverReport{
+	exp1, _ := rtcp.ReceiverReport{
 		SSRC: 0x65f83afb,
 		Reports: []rtcp.ReceptionReport{
 			{
@@ -320,10 +368,22 @@ func TestRtcpReceiverReorderedPackets(t *testing.T) {
 				Delay:              1 * 65536,
 			},
 		},
-	}
-	expected, _ := expectedPkt.Marshal()
+	}.Marshal()
+	exp2, _ := rtcp.SourceDescription{
+		Chunks: []rtcp.SourceDescriptionChunk{
+			{
+				Source: 0x65f83afb,
+				Items: []rtcp.SourceDescriptionItem{
+					{
+						Type: rtcp.SDESCNAME,
+						Text: "hostname",
+					},
+				},
+			},
+		},
+	}.Marshal()
 	ts = time.Date(2008, 05, 20, 22, 15, 21, 0, time.UTC)
-	require.Equal(t, expected, rr.Report(ts))
+	require.Equal(t, append(exp1, exp2...), rr.Report(ts))
 }
 
 func TestRtcpReceiverJitter(t *testing.T) {
@@ -371,7 +431,7 @@ func TestRtcpReceiverJitter(t *testing.T) {
 	ts = time.Date(2008, 05, 20, 22, 15, 21, 0, time.UTC)
 	rr.OnFrame(ts, base.StreamTypeRtp, byts)
 
-	expectedPkt := rtcp.ReceiverReport{
+	exp1, _ := rtcp.ReceiverReport{
 		SSRC: 0x65f83afb,
 		Reports: []rtcp.ReceptionReport{
 			{
@@ -382,8 +442,20 @@ func TestRtcpReceiverJitter(t *testing.T) {
 				Jitter:             45000 / 16,
 			},
 		},
-	}
-	expected, _ := expectedPkt.Marshal()
+	}.Marshal()
+	exp2, _ := rtcp.SourceDescription{
+		Chunks: []rtcp.SourceDescriptionChunk{
+			{
+				Source: 0x65f83afb,
+				Items: []rtcp.SourceDescriptionItem{
+					{
+						Type: rtcp.SDESCNAME,
+						Text: "hostname",
+					},
+				},
+			},
+		},
+	}.Marshal()
 	ts = time.Date(2008, 05, 20, 22, 15, 22, 0, time.UTC)
-	require.Equal(t, expected, rr.Report(ts))
+	require.Equal(t, append(exp1, exp2...), rr.Report(ts))
 }
