@@ -2,6 +2,7 @@ package gortsplib
 
 import (
 	"crypto/rand"
+	"log"
 	"net"
 	"strconv"
 	"sync/atomic"
@@ -161,6 +162,7 @@ func (u *clientUDPListener) runReader() {
 		uaddr := addr.(*net.UDPAddr)
 
 		if !u.remoteReadIP.Equal(uaddr.IP) || (!u.c.AnyPortEnable && u.remoteReadPort != uaddr.Port) {
+			log.Printf("remoteReadIP %v doesn't match uadd.IP %v", u.remoteReadIP, uaddr.IP)
 			continue
 		}
 
