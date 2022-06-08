@@ -153,7 +153,7 @@ func (t *TrackH264) MediaDescription() *psdp.MediaDescription {
 
 	typ := strconv.FormatInt(int64(t.payloadType), 10)
 
-	fmtp := typ + " packetization-mode=1"
+	fmtp := typ + " packetization-mode=1; level-asymmetry-allowed=1"
 
 	var tmp []string
 	if t.sps != nil {

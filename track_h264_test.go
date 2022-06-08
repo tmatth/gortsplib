@@ -211,7 +211,7 @@ func TestTrackH264MediaDescription(t *testing.T) {
 			},
 			{
 				Key: "fmtp",
-				Value: "96 packetization-mode=1; " +
+				Value: "96 packetization-mode=1; level-asymmetry-allowed=1; " +
 					"sprop-parameter-sets=Z2QADKw7ULBLQgAAAwACAAADAD0I,aO48gA==,AQI=; profile-level-id=64000C",
 			},
 			{
