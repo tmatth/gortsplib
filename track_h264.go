@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"fmt"
+	"log"
 	"strconv"
 	"strings"
 	"sync"
@@ -148,6 +149,9 @@ func (t *TrackH264) MediaDescription() *psdp.MediaDescription {
 
 	if len(t.SPS) >= 4 {
 		fmtp += "; profile-level-id=" + strings.ToUpper(hex.EncodeToString(t.SPS[1:4]))
+	} else {
+		log.Println("Forcing profile-level-id=42E01F")
+		fmtp += "; profile-level-id=42E01F"
 	}
 
 	return &psdp.MediaDescription{
