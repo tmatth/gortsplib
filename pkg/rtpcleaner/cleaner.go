@@ -42,7 +42,7 @@ func NewCleaner(isH264 bool, isTCP bool) *Cleaner {
 		isTCP:  isTCP,
 	}
 
-	if isH264 {
+	if false {
 		p.h264Decoder = &rtph264.Decoder{}
 		p.h264Decoder.Init()
 	}
