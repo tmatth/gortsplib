@@ -15,6 +15,7 @@ import (
 type TrackH264 struct {
 	PayloadType uint8
 	SPS         []byte
+	ProfileLevelId []byte
 	PPS         []byte
 
 	trackBase
@@ -78,7 +79,11 @@ func (t *TrackH264) fillParamsFromMediaDescription(md *psdp.MediaDescription) er
 			}
 
 			t.SPS = sps
+			t.ProfileLevelId = []byte(strings.ToUpper(hex.EncodeToString(t.SPS[1:4])))
 			t.PPS = pps
+			return nil
+		} else if tmp[0] == "profile-level-id" {
+			t.ProfileLevelId = []byte(strings.ToUpper(tmp[1]))
 			return nil
 		}
 	}
@@ -119,6 +124,7 @@ func (t *TrackH264) SafeSetSPS(v []byte) {
 	t.mutex.Lock()
 	defer t.mutex.Unlock()
 	t.SPS = v
+	t.ProfileLevelId = []byte(strings.ToUpper(hex.EncodeToString(t.SPS[1:4])))
 }
 
 // SafeSetPPS sets the track PPS.
@@ -148,6 +154,8 @@ func (t *TrackH264) MediaDescription() *psdp.MediaDescription {
 
 	if len(t.SPS) >= 4 {
 		fmtp += "; profile-level-id=" + strings.ToUpper(hex.EncodeToString(t.SPS[1:4]))
+	} else if len(t.ProfileLevelId) > 0 {
+		fmtp += "; profile-level-id=" + string(t.ProfileLevelId)
 	}
 
 	return &psdp.MediaDescription{
