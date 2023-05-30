@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"fmt"
+	"log"
 	"strconv"
 	"strings"
 	"sync"
@@ -164,7 +165,11 @@ func (t *H264) Marshal() (string, string) {
 	}
 	if len(t.SPS) >= 4 {
 		tmp = append(tmp, "profile-level-id="+strings.ToUpper(hex.EncodeToString(t.SPS[1:4])))
+	} else {
+		log.Println("Forcing profile-level-id=42E01F")
+		tmp = append(tmp, "profile-level-id=42E01F")
 	}
+
 	var fmtp string
 	if tmp != nil {
 		fmtp = strings.Join(tmp, "; ")
