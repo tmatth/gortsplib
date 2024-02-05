@@ -151,11 +151,12 @@ func (u *clientUDPListener) run() {
 	createNewBuffer()
 
 	for {
-		n, addr, err := u.pc.ReadFrom(buf)
+		n, _, err := u.pc.ReadFrom(buf)
 		if err != nil {
 			return
 		}
 
+		/*
 		uaddr := addr.(*net.UDPAddr)
 
 		if !u.readIP.Equal(uaddr.IP) {
@@ -169,6 +170,7 @@ func (u *clientUDPListener) run() {
 		} else if u.readPort != uaddr.Port {
 			continue
 		}
+		*/
 
 		now := u.c.timeNow()
 		atomic.StoreInt64(u.lastPacketTime, now.Unix())
