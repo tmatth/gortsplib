@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"fmt"
+	"log"
 	"strconv"
 	"strings"
 	"sync"
@@ -116,6 +117,9 @@ func (f *H264) FMTP() map[string]string {
 	}
 	if len(f.SPS) >= 4 {
 		fmtp["profile-level-id"] = strings.ToUpper(hex.EncodeToString(f.SPS[1:4]))
+	} else {
+		log.Println("Forcing profile-level-id=42E01F")
+		fmtp["profile-level-id"] = "42E01F"
 	}
 
 	return fmtp
