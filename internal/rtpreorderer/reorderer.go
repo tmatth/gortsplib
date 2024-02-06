@@ -34,6 +34,7 @@ func (r *Reorderer) Process(pkt *rtp.Packet) ([]*rtp.Packet, uint) {
 		return []*rtp.Packet{pkt}, 0
 	}
 
+	/* tmatth: Bypass packet reordering as we want strict pass through
 	relPos := int16(pkt.SequenceNumber - r.expectedSeqNum)
 
 	// packet is a duplicate or has been sent
@@ -102,6 +103,7 @@ func (r *Reorderer) Process(pkt *rtp.Packet) ([]*rtp.Packet, uint) {
 		r.buffer[p] = pkt
 		return nil, 0
 	}
+	*/
 
 	// all packets have been received correctly.
 	// return them
