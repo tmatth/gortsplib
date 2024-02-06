@@ -2,6 +2,8 @@
 package rtcpreceiver
 
 import (
+	"crypto/rand"
+	"sync"
 	"time"
 
 	"github.com/bluenviron/gortsplib/v4/internal/rtcpreceiver"
