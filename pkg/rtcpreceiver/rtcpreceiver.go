@@ -307,6 +307,7 @@ func (rr *RTCPReceiver) ProcessPacket2(
 }
 
 func (rr *RTCPReceiver) reorder(pkt *rtp.Packet) ([]*rtp.Packet, uint64) {
+	/* tmatth: Bypass packet reordering as we want strict pass through
 	relPos := int16(pkt.SequenceNumber - rr.lastValidSeqNum - 1) // rr.expectedSeqNum)
 
 	// packet is a duplicate or has been sent
@@ -374,6 +375,7 @@ func (rr *RTCPReceiver) reorder(pkt *rtp.Packet) ([]*rtp.Packet, uint64) {
 		rr.buffer[p] = pkt
 		return nil, 0
 	}
+	*/
 
 	// all packets have been received correctly.
 	// return them.
