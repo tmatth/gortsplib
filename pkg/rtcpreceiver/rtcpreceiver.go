@@ -3,7 +3,6 @@ package rtcpreceiver
 
 import (
 	"crypto/rand"
-	"fmt"
 	"sync"
 	"time"
 
@@ -194,9 +193,6 @@ func (rr *RTCPReceiver) ProcessPacket(pkt *rtp.Packet, system time.Time, ptsEqua
 
 		// subsequent packets
 	} else {
-		if pkt.SSRC != rr.remoteSSRC {
-			return fmt.Errorf("received packet with wrong SSRC %d, expected %d", pkt.SSRC, rr.remoteSSRC)
-		}
 
 		diff := int32(pkt.SequenceNumber) - int32(rr.lastSequenceNumber)
 
