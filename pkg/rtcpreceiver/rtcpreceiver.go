@@ -247,9 +247,11 @@ func (rr *RTCPReceiver) ProcessPacket2(
 		return []*rtp.Packet{pkt}, 0, nil
 	}
 
+	/*
 	if pkt.SSRC != rr.remoteSSRC {
 		return nil, 0, fmt.Errorf("received packet with wrong SSRC %d, expected %d", pkt.SSRC, rr.remoteSSRC)
 	}
+	*/
 
 	var pkts []*rtp.Packet
 	var lost uint64
