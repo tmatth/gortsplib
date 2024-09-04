@@ -4,6 +4,7 @@ go 1.21.0
 
 require (
 	github.com/bluenviron/mediacommon v1.14.0
+	github.com/google/gopacket v1.1.20-0.20220810144506-32ee38206866
 	github.com/google/uuid v1.6.0
 	github.com/pion/rtcp v1.2.15
 	github.com/pion/rtp v1.8.11
