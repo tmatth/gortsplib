@@ -10,6 +10,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/google/gopacket/routing"
 	"github.com/google/uuid"
 	"github.com/pion/rtcp"
 	"github.com/pion/rtp"
@@ -539,6 +540,29 @@ func (ss *ServerSession) runInner() error {
 	}
 }
 
+// https://engineering.qubecinema.com/2019/05/13/go-routing-package.html
+func determineRouteInterface(ip net.IP) net.IP {
+	if ip.IsLoopback() {
+		log.Printf("Skipping loopback")
+		return nil
+	}
+
+	router, err := routing.New()
+	if err != nil {
+		log.Printf("error while creating routing object: %v")
+		return nil
+	}
+
+	_, gatewayIP, preferredSrc, err := router.Route(ip)
+	if err != nil {
+		log.Printf("error routing to ip: %s, %v", ip, err)
+		return nil
+	}
+
+	log.Printf("gatewayIP: %v preferredSrc: %v", gatewayIP, preferredSrc)
+	return preferredSrc
+}
+
 func (ss *ServerSession) handleRequestInner(sc *ServerConn, req *base.Request) (*base.Response, error) {
 	if ss.tcpConn != nil && sc != ss.tcpConn {
 		return &base.Response{
@@ -867,6 +891,11 @@ func (ss *ServerSession) handleRequestInner(sc *ServerConn, req *base.Request) (
 			th.Delivery = &de
 			th.ClientPorts = inTH.ClientPorts
 			th.ServerPorts = &[2]int{sc.s.udpRTPListener.port(), sc.s.udpRTCPListener.port()}
+			log.Printf("ss.author.ip() %s sc.ip() %s\n", ss.author.ip(), sc.ip())
+			transportIp := determineRouteInterface(ss.author.ip())
+			if transportIp != nil {
+				th.Source = &transportIp
+			}
 
 		case TransportUDPMulticast:
 			th.Protocol = headers.TransportProtocolUDP
