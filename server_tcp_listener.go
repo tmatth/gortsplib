@@ -12,7 +12,7 @@ type serverTCPListener struct {
 
 func (sl *serverTCPListener) initialize() error {
 	var err error
-	sl.ln, err = sl.s.Listen(restrictNetwork("tcp", sl.s.RTSPAddress))
+	sl.ln, err = sl.s.Listen("tcp", sl.s.RTSPAddress)
 	if err != nil {
 		return err
 	}
