@@ -98,7 +98,7 @@ func (u *clientUDPListener) initialize() error {
 			return err
 		}
 	} else {
-		tmp, err := u.c.ListenPacket(restrictNetwork("udp", u.address))
+		tmp, err := u.c.ListenPacket("udp", u.address)
 		if err != nil {
 			return err
 		}

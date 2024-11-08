@@ -86,7 +86,7 @@ func (u *serverUDPListener) initialize() error {
 		}
 		u.listenIP = net.ParseIP(host)
 	} else {
-		tmp, err := u.listenPacket(restrictNetwork("udp", u.address))
+		tmp, err := u.listenPacket("udp", u.address)
 		if err != nil {
 			return err
 		}
