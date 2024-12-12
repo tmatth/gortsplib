@@ -79,6 +79,10 @@ func (f *AV1) RTPMap() string {
 func (f *AV1) FMTP() map[string]string {
 	fmtp := make(map[string]string)
 
+//	Disable FMTP for AV1 since its inclusion seems to break downstream negotiation for Janus+Chrome
+//	(possibly due to a LevelIdx mismatch of 8 here vs. 5 everywhere else.
+//	FIXME: We shouldn't have to disable this.
+/*
 	if f.LevelIdx != nil {
 		fmtp["level-idx"] = strconv.FormatInt(int64(*f.LevelIdx), 10)
 	}
@@ -88,6 +92,7 @@ func (f *AV1) FMTP() map[string]string {
 	if f.Tier != nil {
 		fmtp["tier"] = strconv.FormatInt(int64(*f.Tier), 10)
 	}
+*/
 
 	return fmtp
 }
