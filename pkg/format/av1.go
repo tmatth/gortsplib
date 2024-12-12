@@ -79,6 +79,8 @@ func (f *AV1) RTPMap() string {
 func (f *AV1) FMTP() map[string]string {
 	fmtp := make(map[string]string)
 
+	/*
+	Disable FMTP
 	if f.LevelIdx != nil {
 		fmtp["level-idx"] = strconv.FormatInt(int64(*f.LevelIdx), 10)
 	}
@@ -88,6 +90,7 @@ func (f *AV1) FMTP() map[string]string {
 	if f.Tier != nil {
 		fmtp["tier"] = strconv.FormatInt(int64(*f.Tier), 10)
 	}
+	*/
 
 	return fmtp
 }
