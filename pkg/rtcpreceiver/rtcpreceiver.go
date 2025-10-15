@@ -4,7 +4,6 @@ package rtcpreceiver
 import (
 	"crypto/rand"
 	"fmt"
-	"log"
 	"sync"
 	"time"
 
@@ -315,12 +314,10 @@ func (rr *RTCPReceiver) reorder(pkt *rtp.Packet) ([]*rtp.Packet, uint64) {
 	// discard.
 	if relPos < 0 {
 		rr.negativeCount++
-		log.Printf("TOTO1 rr.negativeCount:%v", rr.negativeCount)
 
 		// stream has been resetted, therefore reset reorderer too
 		if rr.negativeCount > len(rr.buffer) {
 			rr.negativeCount = 0
-			log.Printf("TOTO2 reset rr.negativeCount:%v", rr.negativeCount)
 
 			// clear buffer
 			for i := uint16(0); i < uint16(len(rr.buffer)); i++ {
@@ -360,7 +357,6 @@ func (rr *RTCPReceiver) reorder(pkt *rtp.Packet) ([]*rtp.Packet, uint64) {
 		}
 
 		ret[pos] = pkt
-		log.Printf("TOTO3 missing packet and buffer is full, returning buffer and clearing it")
 
 		return ret, uint64(int(relPos) - n + 1)
 	}
@@ -371,13 +367,11 @@ func (rr *RTCPReceiver) reorder(pkt *rtp.Packet) ([]*rtp.Packet, uint64) {
 
 		// current packet is a duplicate. discard
 		if rr.buffer[p] != nil {
-			log.Printf("TOTO4 packet is a duplicate, discard")
 			return nil, 0
 		}
 
 		// put current packet in buffer
 		rr.buffer[p] = pkt
-		log.Printf("TOTO5 there's a missing packet")
 		return nil, 0
 	}
 
