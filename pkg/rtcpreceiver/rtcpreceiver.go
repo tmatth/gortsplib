@@ -334,6 +334,7 @@ func (rr *RTCPReceiver) reorder(pkt *rtp.Packet) ([]*rtp.Packet, uint64) {
 
 	rr.negativeCount = 0
 
+/*
 	// there's a missing packet and buffer is full.
 	// return entire buffer and clear it.
 	if relPos >= int16(len(rr.buffer)) {
@@ -360,6 +361,7 @@ func (rr *RTCPReceiver) reorder(pkt *rtp.Packet) ([]*rtp.Packet, uint64) {
 
 		return ret, uint64(int(relPos) - n + 1)
 	}
+*/
 
 	// there's a missing packet
 	if relPos != 0 {
